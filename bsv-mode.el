@@ -13141,43 +13141,39 @@ but instead, [[Fill in here]] happens!.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defconst bsv-block-start-end-re
-  (eval-when-compile
-    (bsv-regexp-opt
-     (append
-      bsv-start-only-list
-      (mapcar 'car bsv-start-end-alist)
-      (mapcar 'cadr bsv-start-end-alist))
-     'words)))
+  (bsv-regexp-opt
+   (append
+    bsv-start-only-list
+    (mapcar 'car bsv-start-end-alist)
+    (mapcar 'cadr bsv-start-end-alist))
+   'words))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defconst bsv-block-start-re
-  (eval-when-compile
-    (bsv-regexp-opt
-     (mapcar 'car bsv-start-end-alist)
-     'words)))
+  (bsv-regexp-opt
+   (mapcar 'car bsv-start-end-alist)
+   'words))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defconst bsv-block-end-re
-  (eval-when-compile
-    (bsv-regexp-opt
-     (mapcar 'cadr bsv-start-end-alist)
-     'words)))
+  (bsv-regexp-opt
+   (mapcar 'cadr bsv-start-end-alist)
+   'words))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defconst bsv-block-start-only-re
-  (eval-when-compile
-    (bsv-regexp-opt
-     bsv-start-only-list
-     'words)))
+  (bsv-regexp-opt
+   bsv-start-only-list
+   'words))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
