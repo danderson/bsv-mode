@@ -107,7 +107,7 @@
 
 ;;; Code:
 
-(require 'cl)
+(require 'cl-lib)
 
 ;; This variable will always hold the version number of the mode
 (defconst bsv-mode-version "725"
@@ -3683,8 +3683,8 @@ Key bindings specific to `bsv-mode-map' are:
   (set (make-local-variable 'imenu-generic-expression)
        bsv-imenu-generic-expression)
   ;; Tell which-func-modes that imenu knows about bsv
-  (when (boundp 'which-func-modes)
-    (add-to-list 'which-func-modes 'bsv-mode))
+  ;; (when (boundp 'which-func-modes)
+  ;;   (add-to-list 'which-func-modes 'bsv-mode))
   ;; hideshow support
   (when (boundp 'hs-special-modes-alist)
     (unless (assq 'bsv-mode hs-special-modes-alist)
@@ -13398,7 +13398,7 @@ but instead, [[Fill in here]] happens!.
 		 (+ (bsv-get-start-paren-line-indentation) default-offset)))
 	  (setq block-indent-list
 		(mapcar (lambda (x) (max x col)) block-indent-list))
-	  (remove-duplicates (cons col (cons paren-indent block-indent-list))))
+	  (seq-uniq (cons col (cons paren-indent block-indent-list))))
       block-indent-list)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -13451,7 +13451,7 @@ but instead, [[Fill in here]] happens!.
 	(setq current-indent (current-indentation))
 	(setq start-word (second values))
 	(setq current-word (third values))
-	(setq start-col (fourth values))
+	(setq start-col (cl-fourth values))
 	(if (not (null start-word))
 	    (setq indents (cons current-indent indents)))
 	(if (bsv-multiple-indents-p start-word start-col current-word)
@@ -13460,7 +13460,7 @@ but instead, [[Fill in here]] happens!.
     (indent-line-to col-orig)
     (goto-char point-orig)
     (if (null indents) (setq indents (list 0)))
-    (reverse (remove-duplicates indents))))
+    (reverse (seq-uniq indents))))
 
 (defun bsv-block-indent-line (&optional num)
   (let (values col start-word current-word)
@@ -13795,6 +13795,11 @@ but instead, [[Fill in here]] happens!.
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defsubst bsv-get-beg-of-line (&optional arg)
+  (save-excursion
+    (beginning-of-line arg)
+    (point)))
+
 (defun bsv-inside-comment-p ()
   "Check if point inside a nested comment."
   (save-excursion
@@ -14045,8 +14050,8 @@ but instead, [[Fill in here]] happens!.
     ;; search back for suitable regexp
     (if (search-backward-regexp bsv-error1-regexp (point-min) t) 
 	(let ((file   (match-string 1))
-	      (line   (string-to-int (match-string 2)))
-	      (column (string-to-int (match-string 3))))
+	      (line   (string-to-number (match-string 2)))
+	      (column (string-to-number (match-string 3))))
 	  (find-file-other-window file)
 	  (goto-line line)
 	  (forward-char (- column 1))))))
@@ -14069,8 +14074,8 @@ but instead, [[Fill in here]] happens!.
       (if (search-backward-regexp bsv-error1-regexp (point-min) t) 
           (progn
             (setq file (match-string 1))
-            (setq line (string-to-int (match-string 2)))
-            (setq column (string-to-int (match-string 3))))))
+            (setq line (string-to-number (match-string 2)))
+            (setq column (string-to-number (match-string 3))))))
 
     ;; if file is set, then we have an actual error
     ;; setup two windows, one for the BSV file, one for the erro
